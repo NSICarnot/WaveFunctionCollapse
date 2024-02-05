@@ -3,17 +3,15 @@ import os
 from PIL import Image
 
 
-class ImageHelper:
-    def __init__(self, path: str) -> None:
-        assert os.path.exists(path), "Image doesn't exist !"
-        self.__path: str = path
-        self.__image = Image.open(path)
-        
-    def rotate_image(self, angle: int) -> None:
-        self.__image.rotate(angle)
-
-    def get_image_path(self) -> str:
-        return self.__path
+def cut_in_n_times_n(image: Image.Image, n: int = 3) -> None:
+    """
+    Cut the image in n*n pixels
+    """
+    assert type(n) is int, "Argument n must be an integer"
     
-    def get_image(self) -> Image:
-        return self.__image
+    if image.width % 3 != 0 or image.height % 3 != 0:
+        image.resize((image.width - image.width % 3, image.height - image.height % 3))
+    
+    for y in range(image.height // 3):
+        for x in range(image.width // 3):
+            ...

@@ -1,6 +1,6 @@
-from PIL import Image
+import tkinter
+import os
 
-class Image:
-    def __init__(self, path: str) -> None:
-        self.__path: str = path
-        self.__image = ...
+
+if not os.path.exists("image/temp"):
+    os.mkdir("image/temp")
