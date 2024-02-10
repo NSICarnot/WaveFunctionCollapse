@@ -1,5 +1,6 @@
+import os
+import constants as c
 from PIL import Image
-import numpy as np
 
 """
 The algorithm for finding valid neighbors is different according to the simulation demands.
@@ -14,6 +15,37 @@ Algorthm:
 """
 
 def find_valid_neighbors(dir: str) -> dict[dict]:
-    valid_neighbors: dict = {}    
+    valid_neighbors: dict = {}
+    tiles: dict = {}
+    
+    dirs = os.listdir(dir)
+    
+    for t in dirs:
+        t_img = Image.open(f"{dir}/{t}")
+        t_pixels: list[list] = []
+        
+        for y in range(t_img.height):
+            t_pixels.append([])
+            for x in range(t_img.width):
+                t_pixels[y].append(t_img.getpixel((x, y)))
+        
+        tiles[t] = t_pixels
+    
+    max_id: int = c.N - 1
+    for tile in dirs:
+        valid_neighbors[tile] = {"top": [], "left": [], "bottom": [], "right": []}
+        for other in dirs:
+            
+            if tiles[tile][0] == tiles[other][max_id]:
+                valid_neighbors[tile]["top"].append(other)
+                
+            if tiles[tile][max_id] == tiles[other][0]:
+                valid_neighbors[tile]["bottom"].append(other)
+                
+            if [tiles[tile][x][0] for x in range(c.N)] == [tiles[tile][x][max_id] for x in range(c.N)]:
+                valid_neighbors[tile]["left"].append(other)
+                
+            if [tiles[tile][x][max_id] for x in range(c.N)] == [tiles[tile][x][0] for x in range(c.N)]:
+                valid_neighbors[tile]["right"].append(other)
     
     return valid_neighbors

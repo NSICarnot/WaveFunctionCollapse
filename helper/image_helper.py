@@ -37,15 +37,14 @@ def remove_duplicate(dir: str) -> None:
     If an image is equal to an another image. Then remove the duplicate image.
     """
     for image in os.listdir(dir):
-        if os.path.exists(f"{dir}/{image}"):
-            image_pil = Image.open(f"{dir}/{image}")
-            for other in os.listdir(dir):
-                other_pil = Image.open(f"{dir}/{other}")
-                if equals(image_pil, other_pil):
-                    if not image == other:
-                        os.remove(f"{dir}/{other}")
-        else:
+        if not os.path.exists(f"{dir}/{image}"):
             continue
+        image_pil = Image.open(f"{dir}/{image}")
+        for other in os.listdir(dir):
+            other_pil = Image.open(f"{dir}/{other}")
+            if equals(image_pil, other_pil):
+                if not image == other:
+                    os.remove(f"{dir}/{other}")
 
 
 def cut_in_n_times_n(image: Image.Image, n: int = 3) -> None:
@@ -70,5 +69,6 @@ def cut_in_n_times_n(image: Image.Image, n: int = 3) -> None:
             for i in range(1, 4):
                 temp_pattern = temp_pattern.rotate(90 * i)
                 temp_pattern.save(f"image/temp/temp{count}.png")
+                count += 1
        
     remove_duplicate(c.TEMP_DIR)
