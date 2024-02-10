@@ -1,16 +1,16 @@
 import tkinter
 import os
+import constants as c
 
 from PIL import Image
-
 from helper import image_helper as ih
     
-if not os.path.exists("image/temp"):
-    os.mkdir("image/temp")
+if not os.path.exists(c.TEMP_DIR):
+    os.mkdir(c.TEMP_DIR)
     
-temp_files = [name for name in os.listdir("image/temp")]
+temp_files = [name for name in os.listdir(c.TEMP_DIR)]
 for f in temp_files:
-    os.remove(f"image/temp/{f}")
+    os.remove(f"{c.TEMP_DIR}/{f}")
 del temp_files
-    
-ih.cut_in_n_times_n(Image.open("image/capture.png"))
+
+ih.cut_in_n_times_n(Image.open("image/Flowers.png"))

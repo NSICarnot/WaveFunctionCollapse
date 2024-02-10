@@ -1,0 +1,1 @@
+TEMP_DIR: str = "image/temp"
