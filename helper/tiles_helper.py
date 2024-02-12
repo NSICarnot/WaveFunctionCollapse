@@ -48,4 +48,6 @@ def find_valid_neighbors(dir: str) -> dict[dict]:
             if [tiles[tile][x][max_id] for x in range(c.N)] == [tiles[tile][x][0] for x in range(c.N)]:
                 valid_neighbors[tile]["right"].append(other)
     
+    c.TILES = tiles
+    c.VALID_NEIGHBORS = valid_neighbors
     return valid_neighbors
