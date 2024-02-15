@@ -1,5 +1,6 @@
 import tkinter
 import os
+import random as r
 import constants as c
 
 from PIL import Image
@@ -20,20 +21,22 @@ c.VALID_NEIGHBORS = th.find_valid_neighbors(c.TEMP_DIR)
 print(c.VALID_NEIGHBORS)
 
 def main():
-    wave: list[list[Tile]] = [[Tile() for _ in range(c.OUTPUT_WIDTH // c.N)] for _ in range(c.OUTPUT_HEIGHT // c.N)]
+    wave: list[list[Tile]] = [[Tile() for _ in range(c.OUTPUT_WIDTH)] for _ in range(c.OUTPUT_HEIGHT)]
     
-    min_tile_entropy: Tile = wave[0][0]
-    while min_tile_entropy:
+    wave[r.randint(0, c.OUTPUT_HEIGHT)][r.randint(0, c.OUTPUT_WIDTH)].tile = r.choice([x for x in c.VALID_NEIGHBORS.keys()])
+    while True:
+        min_tile_entropy: Tile = wave[0][0]
         for y in wave:
             for x in y:
-                if x.get_entropy() < min_tile_entropy.get_entropy():
+                if x.get_entropy() < min_tile_entropy.get_entropy() and not x.is_collapsed():
                     min_tile_entropy = x
         if not min_tile_entropy.get_entropy() - 1:
             break
         print(min_tile_entropy.get_entropy())
         min_tile_entropy.collapse()
-        for y in wave:
-            for x in y:
+        for y_co, y in enumerate(wave):
+            for x_co, x in enumerate(y):
+                x.recalculate_neighbors(wave, x_co, y_co)
                 x.recalculate_entropy()
         
     print("Fini")
